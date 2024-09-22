@@ -19,24 +19,17 @@ function loadTask() {
         let taskhtml = '';
         for(let i=0; i<data.length;i++){
             const task = data[i];
-            taskhtml+= `<div class="task">
-                <div class="task-header">
-                    <h2>${task.name}</h2>
-                </div>    
+            taskhtml+= `
+                <div class="task">
+                <input type="checkbox" class="task-checkbox">
+                <h2>${task.name}</h2>   
                 <p>${task.description}</p>
-                <p>due date: ${task.dueDate}</p>
+                <p>Creation date: ${task.creationDate}</p>
+                <p>Due date: ${task.dueDate}</p>
+                <button class="delete-button" onclick="deleteTask(${task.id})"><i class="fas fa-trash-alt"></i></button>
             </div>` 
         }
         document.getElementById("task-container").innerHTML = taskhtml;
-        
-    /*<div class="task">
-            <div class="task-header">
-                <h2>titulo</h2>
-            </div>    
-            <p>descripcion</p>
-            <p>due date: fecha</p>
-        </div>*/
-
     })
     .catch(function (error) {
         console.log('Error:', error);
