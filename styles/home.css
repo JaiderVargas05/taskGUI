@@ -44,10 +44,16 @@ header div{
 /*estilo title,description*/
 main{
     display: flex;
-    justify-content: flex-start; 
-    align-items: center; 
     height: 50vh; 
-    margin-left: 4rem; /
+    margin-left: 4rem; 
+    flex-direction: column;
+    align-content: center;
+    margin-top: 80px;
+    height: fit-content;
+    position: sticky; 
+    top: 70px; 
+    left: 0; 
+    z-index: 1000; 
 }
 .task-form {
     display: flex;
@@ -55,7 +61,7 @@ main{
     gap: 1rem;
     width: 40%;
 }
-.form-group label, .date-input label {
+.form-group label, .date-container label {
     font-size: 18px;
     color: #15505d;
 }
@@ -63,33 +69,41 @@ main{
 .form-group textarea {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid #15505d;
     border-radius: 8px;
     font-size: 16px;
     font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
     resize: none;
+    background-color: #afd1c6;
+    margin-top: 20px;
 }
 /*estilo calendario*/
-.date-input {
+.date-container {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     border: none;
+    justify-content: space-between;
 }
-
+.date-input{
+    display: flex;
+    align-items: center; 
+    gap: 10px; 
+}
 .date-input svg {
     color: #15505d;
 }
 
 .date-input input {
-    border: 1px solid #ccc;
+    border: 1px solid #15505d;
     border-radius: 8px;
     padding: 0.5rem;
-    font-family: 'Montserrat', sans-serif;
+    background-color: transparent;
+    color: #15505d;
 }
 
-.date-input button {
+.date-container button {
     background-color: #15505d;
     color: white;
     border: none;
@@ -97,5 +111,8 @@ main{
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-size: 16px;
-    font-family: 'Montserrat', sans-serif;
+    
+}
+#taskDescription{
+    height: 200px;
 }
