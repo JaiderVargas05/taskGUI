@@ -1,0 +1,42 @@
+body{
+    background-color: #daede5;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header{
+    display: flex;
+    background-color: #15505d;
+    justify-content: space-between;
+    width: 100vw; 
+    padding: 0 4rem 0 4rem; 
+    box-sizing: border-box;
+}
+header div{
+    display: flex;
+    color: white;
+    align-items: center;
+
+}
+#user-container button{
+    background-color: #eefb03;
+    width: 15rem;
+    height: min-content;
+    border-radius: 11px; 
+    padding: 0.5rem 1rem; 
+    border: none; 
+    cursor: pointer; 
+    font-size: 18px;
+}
+#user-container p{
+    font-size: 22px;
+    margin-right: 2rem;
+}
+#logo-container img{
+    height: 50px;
+}
+#logo-container h1{
+    margin-left: 1rem;
+}
+
+
