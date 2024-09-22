@@ -11,10 +11,31 @@ function loadTask() {
         if (!res.ok) {
             throw new Error('Error en la solicitud: ' + res.status);
         }
-        return res.json();  // Convertir la respuesta a JSON
+        return res.json();  
     })
     .then(function (data) {
-        console.log(data);  // Aquí se imprimen las tareas obtenidas
+        console.log(data);
+        let taskList = [];
+        let taskhtml = '';
+        for(let i=0; i<data.length;i++){
+            const task = data[i];
+            taskhtml+= `<div class="task">
+                <div class="task-header">
+                    <h2>${task.name}</h2>
+                </div>    
+                <p>${task.description}</p>
+                <p>due date: ${task.dueDate}</p>
+            </div>` 
+        }
+        document.getElementById("task-container").innerHTML = taskhtml;
+        
+    /*<div class="task">
+            <div class="task-header">
+                <h2>titulo</h2>
+            </div>    
+            <p>descripcion</p>
+            <p>due date: fecha</p>
+        </div>*/
 
     })
     .catch(function (error) {
