@@ -1,4 +1,6 @@
-
+/*
+*Funcion para cargar las tareas
+*/
 function loadTask() {
     fetch("http://localhost:8080/taskManager/getTasks", {
         headers: {
@@ -21,8 +23,8 @@ function loadTask() {
             const task = data[i];
             let isCompleted = task.isCompleted ? 'COMPLETED' : '';
             let buttonCheck = task.isCompleted 
-            ? `<input type="checkbox" class="task-checkbox" onclick="disabledButton(this, '${task.id}')" checked disabled />` 
-            : `<input type="checkbox" class="task-checkbox" onclick="disabledButton(this, '${task.id}')" />`;
+            ? `<input type="checkbox" class="task-checkbox" onclick="disabledButton('${task.id}')" checked disabled />` 
+            : `<input type="checkbox" class="task-checkbox" onclick="disabledButton('${task.id}')" />`;
 
             taskhtml+= `
             <div class="task ${isCompleted}">
@@ -41,7 +43,9 @@ function loadTask() {
     });
 }
 
-
+/*
+*Funcion para añadir una tarea
+*/
 function addTask(){
     const taskName = document.getElementById("taskTitle").value;
     const description = document.getElementById("taskDescription").value;
@@ -83,7 +87,9 @@ function addTask(){
         .catch(function (res) { console.log(res) })
         loadTask();
     }
-
+    /*
+    *Funcion para eliminar tareas
+    */
     function deleteTask(taskId) {
         fetch(`http://localhost:8080/taskManager/delete?id=${taskId}`, {
             method: 'DELETE',
@@ -104,8 +110,10 @@ function addTask(){
             console.log('Error:', error);
         });
     }
-
-    function disabledButton(button, id){
+    /*
+    *Funcion para marcar una tarea como completada
+    */
+    function disabledButton(id){
         console.log(id);
         fetch(`http://localhost:8080/taskManager/markTaskAsCompleted?id=${id}`, {
             method: 'PATCH',
@@ -116,9 +124,6 @@ function addTask(){
         })
         .then(function (res) {
             if (res.ok) {
-                button.parentElement.style.background = '#3c895f';
-                button.checked = true;
-                button.disabled = true;
                 loadTask();
             } else {
                 console.log('Failed to delete task');
