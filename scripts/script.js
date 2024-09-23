@@ -19,14 +19,19 @@ function loadTask() {
         let taskhtml = '';
         for(let i=0; i<data.length;i++){
             const task = data[i];
+            let isCompleted = task.isCompleted ? 'COMPLETED' : '';
+            let buttonCheck = task.isCompleted 
+            ? `<input type="checkbox" class="task-checkbox" onclick="disabledButton(this, '${task.id}')" checked disabled />` 
+            : `<input type="checkbox" class="task-checkbox" onclick="disabledButton(this, '${task.id}')" />`;
+
             taskhtml+= `
-                <div class="task">
-                <input type="checkbox" class="task-checkbox">
+            <div class="task ${isCompleted}">
+                ${buttonCheck}
                 <h2>${task.name}</h2>   
                 <p>${task.description}</p>
                 <p>Creation date: ${task.creationDate}</p>
                 <p>Due date: ${task.dueDate}</p>
-                <button class="delete-button" onclick="deleteTask(${task.id})"><i class="fas fa-trash-alt"></i></button>
+                <button class="delete-button" onclick="deleteTask('${task.id}')"><i class="fas fa-trash-alt"></i></button>
             </div>` 
         }
         document.getElementById("task-container").innerHTML = taskhtml;
@@ -38,10 +43,29 @@ function loadTask() {
 
 
 function addTask(){
-    let taskName = document.getElementById("taskTitle").value;
-    let description = document.getElementById("taskDescription").value;
-    let date = document.getElementById("taskDueDate").value;
-        
+    const taskName = document.getElementById("taskTitle").value;
+    const description = document.getElementById("taskDescription").value;
+    const date = document.getElementById("taskDueDate").value;
+    if (!taskName || !description || !date) {
+        alert('Please fill all the fields');
+        return;
+    }
+    if(taskName.length > 30){
+        alert('The title is too long');
+        return;
+    }
+    if (description.length > 50) {
+        alert('The description is too long');
+        return;
+    }
+   
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    let selectedDate = new Date(date);
+    if (selectedDate < currentDate) {
+        alert('The due date must be greater than the current date');
+        return;
+    };   
     fetch("http://localhost:8080/taskManager/saveTask",
         {
             headers: {
@@ -57,42 +81,58 @@ function addTask(){
         })
         .then(function (res) { console.log(res); loadTask(); })
         .catch(function (res) { console.log(res) })
-        
-
+        loadTask();
     }
 
-        /*let taskDescription = $("#task-description").val();
-        if (!taskName || !taskDescription) {
-            alert('Please fill all the fields');
-            return;
-        }
-        if (taskDescription.length > 40) {
-            alert('The description is too long');
-            return;
-        }
-        let dueDateText = $('#dueDateText');
-        if (!dueDateText.text()) {
-            alert('Please select a due date');
-            return;
-        }
-        let currentDate = new Date();
-        let dueDate = new Date(dueDateText.text());
-        currentDate.setHours(0, 0, 0, 0);
-        if (dueDate < currentDate) {
-            alert('The due date must be greater than the current date');
-            return;
-        };
-        if(user.checkExistingTask(dueDateText.text(),taskName)){
-            alert('A task with that name already exist on this date.');
-            return;
-        }
-        let task = new Task(taskName, taskDescription, Status.PENDING, user.subjects[0]);
-        user.addTask(dueDateText.text(), task);
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem(`user${localStorage.getItem('currentUser')}`,JSON.stringify(user));
-        loadTasks();*/
-        window.addTask = addTask;
-        $(document).ready(function () {
-            loadTask();
+    function deleteTask(taskId) {
+        fetch(`http://localhost:8080/taskManager/delete?id=${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function (res) {
+            if (res.ok) {
+                console.log('Task deleted successfully');
+                loadTask();
+            } else {
+                console.log('Failed to delete task');
+            }
+        })
+        .catch(function (error) {
+            console.log('Error:', error);
         });
+    }
+
+    function disabledButton(button, id){
+        console.log(id);
+        fetch(`http://localhost:8080/taskManager/markTaskAsCompleted?id=${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function (res) {
+            if (res.ok) {
+                button.parentElement.style.background = '#3c895f';
+                button.checked = true;
+                button.disabled = true;
+                loadTask();
+            } else {
+                console.log('Failed to delete task');
+            }
+        })
+        .catch(function (error) {
+            console.log('Error:', error);
+        });
+    }
+    
+    
+    window.addTask = addTask;
+    window.deleteTask = deleteTask;
+    $(document).ready(function () {
+        loadTask();
+    });
 

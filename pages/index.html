@@ -11,23 +11,18 @@
 
 <body>
 	<header>
-        <div id="logo-container">
-            <img src="../images/logo.png" alt="Logo de la app" class="logo">
-            <h1>TaskManager</h1>
-        </div>
-        <div id="user-container">
-            <p>Welcome, user123</p>
-            <button>Log Out</button>
-        </div>
+        <img src="../images/logo.png" alt="Logo de la app" class="logo">
+        <h1>TaskManager</h1>
+
 	</header>
 <main>
     <div class="task-form">
         <div class="form-group">
-            <label for="taskTitle">Title</label>
+            <label for="taskTitle"><b>Title</b></label>
             <input type="text" id="taskTitle" placeholder="Enter a title (no more than 30 characters)" maxlength="30">
         </div>
         <div class="form-group">
-            <label for="taskDescription">Description</label>
+            <label for="taskDescription"><b>Description</b></label>
             <textarea id="taskDescription" placeholder="Enter a description (no more than 50 characters)" maxlength="50"></textarea>
         </div>
         <div class="date-container">
@@ -39,7 +34,6 @@
                     <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
                 <input type="date" id="taskDueDate">
-                <!--toca implementar addTask por js-->
             </div>
             <button onclick="addTask()">Add</button>
         </div>
